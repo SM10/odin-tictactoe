@@ -9,14 +9,16 @@
     <title>TicTacFoe</title>
 </head>
 <body>
-    <header>
+    <div class="header">
         <h1 class="page-title">Tic Tac Foe</h1>
-    </header>
-    <content>
-        <div class="player-menu" id="player-o-menu">
-            <div>Player X</div>
-            <img class="o-icon" src="./images/fencing.svg">
+    </div>
+    <div class="content">
+        <div class="player-menu" id="player-x-menu">
+            <h2>Player X</h2>
             <button class="player-name-button" id="player-x-name-button">Change Name</button>
+            <img class="x-icon player-icon">
+            <h3>Wins</h3>
+            <div class="score" id="player-x-score"></div>
         </div>
         <div class="game-space">
             <div class="gameboard">
@@ -27,13 +29,15 @@
             <button class="reset-button">reset-button</button>
         </div>
         <div class="player-menu" id="player-o-menu">
-            <div>Player O</div>
-            <img class="o-icon" src="./images/shield-outline.svg">
+            <h2>Player O</h2>
             <button class="player-name-button" id="player-o-name-button">Change Name</button>
+            <img class="o-icon player-icon">
+            <h3>Wins</h3>
+            <div class="score" id="player-o-score"></div>
         </div>
-    </content>
-    <footer>
+    </div>
+    <div class="footer">
         <div class="footer-text">Made by Stephen Man. All images taken from <a href="https://pictogrammers.com/library/mdi/">Material Design Icons</a></div>
-    </footer>
+    </div>
 </body>
 </html>

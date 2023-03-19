@@ -1,0 +1,104 @@
+html{
+    font: 2vh;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    width:100%;
+    height:100%;
+}
+
+h1, h2, h3, h4 , h5, h6{
+    margin:0;
+    padding:0;
+}
+
+h1, h2{
+    padding: 2vh;
+
+}
+
+img.x-icon{
+    content:url("./images/fencing.svg")
+}
+
+img.o-icon{
+    content:url("./images/shield-outline.svg")
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    align-items: stretch;
+}
+
+.header{
+    padding:2vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkslateblue;
+    color: white;
+}
+
+.content{
+    width: auto;
+    flex:auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.player-menu{
+    width:25vw;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: darkgray;
+}
+
+#player-x-menu{
+    color:darkred;
+}
+
+img.x-icon{
+    filter: invert(9%) sepia(84%) saturate(5308%) hue-rotate(2deg) brightness(87%) contrast(112%);
+}
+
+#player-o-menu{
+    color:darkgreen;
+}
+
+img.o-icon{
+    filter: invert(18%) sepia(81%) saturate(2491%) hue-rotate(111deg) brightness(93%) contrast(102%);
+}
+
+.player-icon{
+    align-self:stretch;
+    aspect-ratio: 1/1;
+}
+
+.game-space{
+    flex:auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+.gameboard{
+    max-width: 60vw;
+    max-height: 70vh;
+    aspect-ratio: 1/1;
+    grid-row: 1;
+    grid-column: 1/5;
+}
+
+.footer{
+    padding: 2vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkslateblue;
+    color: white;
+}
