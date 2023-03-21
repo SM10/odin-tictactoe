@@ -1,9 +1,6 @@
 
-
-let gameplayobject;
-
 //Start for start button
-const GenGameplay = function(playerx, playero){
+const GameplayManager = function(playerx, playero){
     let turnplayer;
     let board;
 
@@ -51,8 +48,8 @@ const GenGameplay = function(playerx, playero){
     return {Start}
 }
 
-const Player = function(xory, name = '', wins = 0){
-    return{xory, name, wins}
+const Player = function(name = '', wins = 0){
+    return{name, wins}
 }
 
 const GameBoard = function(){
@@ -111,5 +108,11 @@ const GameBoard = function(){
         })
     }
 
-    return {GetBoard, GetCell, SetCell}
+    return {GetBoard, GetCell, SetCell, SetCellEventListener}
 }
+
+let playerx = new Player("Player X")
+let playero = new Player("Player O")
+let gm = GameplayManager(playerx, playero)
+
+gm.Start(document.querySelector(".gameboard-area"));
