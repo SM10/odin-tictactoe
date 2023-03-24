@@ -3,6 +3,7 @@
 const GameplayManager = function(playerx, playero){
     let turnplayer;
     let board;
+    let onTurnPlayerSwitched;
 
     const RandomFirst = () => {
         if (Math.random() * 100 % 2 === 0){
@@ -25,31 +26,44 @@ const GameplayManager = function(playerx, playero){
     }
 
     const SetTurnPlayer = (newturnplayer) => {
-        if (turnplayer === playerx || turnplayer === playero){
+        if (newturnplayer === playerx || newturnplayer === playero){
             turnplayer = newturnplayer;
+            onTurnPlayerSwitched(turnplayer.xoro)
         }
     }
 
     const SwitchTurnPlayer = () => {
-        if (turnplayer === playerx){
+        if (turnplayer.xoro === 'x'){
             turnplayer = playero;
-        } else if (turnplayer === playero){
+        } else if (turnplayer.xoro === 'o'){
             turnplayer = playerx;
         }
+        
+        if (onTurnPlayerSwitched != undefined){
+            onTurnPlayerSwitched(turnplayer.xoro);
+        }
+    }
+
+    const SetTurnPlayerSwitchedFunction = (turnPlayerSwitchedFunction) => {
+        onTurnPlayerSwitched = turnPlayerSwitchedFunction;
     }
 
     const CellPicked = (event) => {
         if(event.target.innerHTML === ''){
-            board.SetCell(event.target, turnplayer.xory)
+            if(turnplayer.xoro = 'x'){
+                board.SetCell(event.target, "./images/fencing.svg")
+            }else if(turnplayer.xoro= 'o'){
+                board.SetCell(event.target, "./images/shield-outline.svg")
+            }
             SwitchTurnPlayer();
         }
     }
 
-    return {Start}
+    return {Start, SetTurnPlayerSwitchedFunction}
 }
 
-const Player = function(name = '', wins = 0){
-    return{name, wins}
+const Player = function(xoro, name = '', wins = 0){
+    return{xoro, name, wins}
 }
 
 const GameBoard = function(){
@@ -83,20 +97,11 @@ const GameBoard = function(){
         return cell;
     }
 
-    const SetCell = (cell, xoro) => {
+    const SetCell = (cell, imagesrc) => {
         if (cell.innerHTML === ''){
-            const image = document.createElement("div")
+            const image = document.createElement("img")
             image.classList.add("game-cell-image")
-                switch (xoro.toString().toLowerCase()){
-                    case 'x':
-                        image.src = "./images/fencing.svg"                        
-                        image.classList.add("x-icon")
-                        break;
-                    case 'o':
-                        image.src = "./images/shield-outline.svg"                        
-                        image.classList.add("o-icon")
-                        break;
-                }
+            image.src = imagesrc
             cell.append(image);
         }
     }
@@ -111,8 +116,22 @@ const GameBoard = function(){
     return {GetBoard, GetCell, SetCell, SetCellEventListener}
 }
 
-let playerx = new Player("Player X")
-let playero = new Player("Player O")
+let playerx = new Player("x", "Player X")
+let playero = new Player("o", "Player O")
 let gm = GameplayManager(playerx, playero)
+gm.SetTurnPlayerSwitchedFunction((xoro) => {
+    let playerxicon = document.querySelector(".x-icon.player-icon")
+    let playeroicon = document.querySelector(".o-icon.player-icon")
+    switch (xoro){
+        case 'x':
+            playerxicon.setAttribute("visibility", "visible")
+            playeroicon.setAttribute("visibility", "invisible")
+            break;
+        case 'o':
+            playerxicon.setAttribute("visibility", "invisible")
+            playeroicon.setAttribute("visibility", "visible")
+            break;
+    }
+})
 
 gm.Start(document.querySelector(".gameboard-area"));

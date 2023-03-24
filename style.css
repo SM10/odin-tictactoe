@@ -20,7 +20,8 @@ h1, h2{
 }
 
 img.x-icon{
-    content:url("./images/fencing.svg")
+    content:url("./images/fencing.svg");
+    
 }
 
 img.o-icon{
@@ -98,6 +99,11 @@ img.o-icon{
 .game-cell{
     border-color: black;
     border-style: solid;
+}
+
+.game-cell-image{
+    width: 100%;
+    height: 100%;
 }
 
 .game-space-buttons{
