@@ -49,13 +49,14 @@ const GameplayManager = function(playerx, playero){
     }
 
     const CellPicked = (event) => {
-        if(event.target.innerHTML === ''){
-            if(turnplayer.xoro = 'x'){
+        if(!event.target.className != "game-cell-image"){
+            if(turnplayer.xoro ==="x"){
                 board.SetCell(event.target, "./images/fencing.svg")
-            }else if(turnplayer.xoro= 'o'){
+                SwitchTurnPlayer()
+            }else if(turnplayer.xoro === "o"){
                 board.SetCell(event.target, "./images/shield-outline.svg")
+                SwitchTurnPlayer()
             }
-            SwitchTurnPlayer();
         }
     }
 
@@ -125,11 +126,13 @@ gm.SetTurnPlayerSwitchedFunction((xoro) => {
     switch (xoro){
         case 'x':
             playerxicon.setAttribute("visibility", "visible")
-            playeroicon.setAttribute("visibility", "invisible")
+            playeroicon.setAttribute("visibility", "hidden")
+            console.log("x visible")
             break;
         case 'o':
-            playerxicon.setAttribute("visibility", "invisible")
+            playerxicon.setAttribute("visibility", "hidden")
             playeroicon.setAttribute("visibility", "visible")
+            console.log("o visible")
             break;
     }
 })
