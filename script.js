@@ -49,7 +49,7 @@ const GameplayManager = function(playerx, playero){
     }
 
     const CellPicked = (event) => {
-        if(!event.target.className != "game-cell-image"){
+        if(event.target.className != "game-cell-image"){
             if(turnplayer.xoro ==="x"){
                 board.SetCell(event.target, "./images/fencing.svg")
                 SwitchTurnPlayer()
@@ -60,7 +60,9 @@ const GameplayManager = function(playerx, playero){
         }
     }
 
-    return {Start, SetTurnPlayerSwitchedFunction}
+    const Reset = () =>{ board.ClearBoard(); }
+
+    return {Start, SetTurnPlayerSwitchedFunction, Reset}
 }
 
 const Player = function(xoro, name = '', wins = 0){
@@ -107,6 +109,13 @@ const GameBoard = function(){
         }
     }
 
+    const ClearBoard = () =>{
+        let cells = board.querySelectorAll(".game-cell")
+        cells.forEach(cell =>{
+            cell.innerHTML = '';
+        })
+    }
+
     const SetCellEventListener = (EventListener) => {
         let cells = board.querySelectorAll(".game-cell")
         cells.forEach(cell => {
@@ -114,7 +123,7 @@ const GameBoard = function(){
         })
     }
 
-    return {GetBoard, GetCell, SetCell, SetCellEventListener}
+    return {GetBoard, GetCell, SetCell, SetCellEventListener, ClearBoard}
 }
 
 let playerx = new Player("x", "Player X")
@@ -125,16 +134,18 @@ gm.SetTurnPlayerSwitchedFunction((xoro) => {
     let playeroicon = document.querySelector(".o-icon.player-icon")
     switch (xoro){
         case 'x':
-            playerxicon.setAttribute("visibility", "visible")
-            playeroicon.setAttribute("visibility", "hidden")
+            playerxicon.style.setProperty("visibility", "visible")
+            playeroicon.style.setProperty("visibility", "hidden")
             console.log("x visible")
             break;
         case 'o':
-            playerxicon.setAttribute("visibility", "hidden")
-            playeroicon.setAttribute("visibility", "visible")
+            playerxicon.style.setProperty("visibility", "hidden")
+            playeroicon.style.setProperty("visibility", "visible")
             console.log("o visible")
             break;
     }
 })
 
+let resetButton = document.querySelector(".reset-button")
 gm.Start(document.querySelector(".gameboard-area"));
+resetButton.addEventListener('click', gm.Reset, false)
