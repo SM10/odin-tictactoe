@@ -2,5 +2,6 @@ Add turn player market to html - complete
 Actually make the game (turn player is not switching) - complete
 Add function to record player name and wins/loss 
 Add function to show and mark turn player -complete
-Add function to check winner
+Add function to check winner -complete
+Add function to show winner
 Put padding on play menu so grid never goes past screen

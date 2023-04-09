@@ -69,24 +69,63 @@ const GameplayManager = function(playerx, playero, container){
         isGameStarted = false;
     }
 
+
+
     const CheckWinner = () =>{
-        let isAllRowsFilled = false;
+        let isAllRowsFilled = true;
         let isRowWin = true;
-        let isColWin = true;
+        let isColWin = {0:true, 1:true, 2:true};
         let isBackSlashWin = true;
         let backSlashVar = undefined;
-        let isForwardSlash = true;
+        let isForwardSlashWin = true;
         let forwardSlashVar = undefined;
-        let rowtop = undefined;
+        let rowtop = {0:undefined, 1:undefined, 2:undefined};
         let colleft = undefined;
+        
 
         for(let y = 0; y < 3; y++){
             
-            for(let x = 0; x < 3; x++){
-                
-                board.GetCell(x, y)
+            for(let x = 0; x < 3; x++){            
+                let occupyplayer = board.GetCell(x, y).getAttribute("occupying-player")
+                if(colleft == undefined){colleft = occupyplayer}
+                else if(colleft != occupyplayer){isRowWin == false}
+
+                if(rowtop[x] == undefined){rowtop[x] = occupyplayer}
+                else if (rowtop[x] != occupyplayer){isColWin[x] = false}
+
+                if((x == 0 && y == 0)||(x == 1 && y == 1)||(x == 2 && y == 2)){
+                    if(backSlashVar == undefined){backSlashVar = occupyplayer}
+                    else if (backSlashVar != occupyplayer){isBackSlashWin = false}
+                }
+
+                if((x == 2 && y == 0)||(x == 1 && y == 1)||(x == 0 && y == 2)){
+                    if(forwardSlashVar == undefined){forwardSlashVar = occupyplayer}
+                    else if (forwardSlashVar != occupyplayer){isForwardSlashWin = false}
+                }
+
+                if(occupyplayer == undefined) {isAllRowsFilled = false}
             }
         }
+
+        if(isRowWin){OnWinner(colleft); return;}
+        for(let i = 0; i < 3; i++){
+            if(isColWin[i]){OnWinner(rowtop[i]); return;}
+        }
+        if(isBackSlashWin){OnWinner(backSlashVar); return;}
+        if(isForwardSlashWin){OnWinner(forwardSlashVar); return;}
+        if(isAllRowsFilled){OnDraw()}
+    }
+
+    const OnWinner = (winnerxoro) => {
+        isGameStarted = false
+        board.style.opacity = "0.2"
+        
+        let winnermessage = document.createElement("div")
+        
+    }
+
+    const OnDraw = () =>{
+
     }
 
     return {Start, SetUpBoard, SetTurnPlayerSwitchedFunction, Reset}
@@ -133,7 +172,7 @@ const GameBoard = function(){
             image.classList.add("game-cell-image")
             image.src = imagesrc
             cell.append(image);
-            cell.setAttribute("OccupyingPlayer", occupyingplayerxoro)
+            cell.setAttribute("occupying-player", occupyingplayerxoro)
         }
     }
 
