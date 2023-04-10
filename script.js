@@ -6,7 +6,7 @@ const GameplayManager = function(playerx, playero, container){
     let isGameStarted = false;
 
     const RandomFirst = () => {
-        if (Math.random() * 100 % 2 === 0){
+        if (Math.random() * 100 % 2 == 0){
             return playerx;
         }else{
             return playero;
@@ -61,6 +61,7 @@ const GameplayManager = function(playerx, playero, container){
                 SwitchTurnPlayer()
             }
         }
+        CheckWinner();
     }
     }
 
@@ -73,41 +74,41 @@ const GameplayManager = function(playerx, playero, container){
 
     const CheckWinner = () =>{
         let isAllRowsFilled = true;
-        let isRowWin = true;
         let isColWin = {0:true, 1:true, 2:true};
         let isBackSlashWin = true;
-        let backSlashVar = undefined;
+        let backSlashVar = null;
         let isForwardSlashWin = true;
-        let forwardSlashVar = undefined;
-        let rowtop = {0:undefined, 1:undefined, 2:undefined};
-        let colleft = undefined;
+        let forwardSlashVar = null;
+        let rowtop = {0:null, 1:null, 2:null};
         
 
         for(let y = 0; y < 3; y++){
-            
+            let colleft = null;
+            let isRowWin = true;
             for(let x = 0; x < 3; x++){            
                 let occupyplayer = board.GetCell(x, y).getAttribute("occupying-player")
-                if(colleft == undefined){colleft = occupyplayer}
-                else if(colleft != occupyplayer){isRowWin == false}
 
-                if(rowtop[x] == undefined){rowtop[x] = occupyplayer}
-                else if (rowtop[x] != occupyplayer){isColWin[x] = false}
+                if(colleft == null){colleft = occupyplayer}
+                if(colleft != occupyplayer || occupyplayer == null){isRowWin = false}
 
-                if((x == 0 && y == 0)||(x == 1 && y == 1)||(x == 2 && y == 2)){
-                    if(backSlashVar == undefined){backSlashVar = occupyplayer}
-                    else if (backSlashVar != occupyplayer){isBackSlashWin = false}
+                if(rowtop[x] == null){rowtop[x] = occupyplayer}
+                if (rowtop[x] != occupyplayer || occupyplayer == null){isColWin[x] = false}
+
+                if((x === 0 && y === 0)||(x === 1 && y === 1)||(x === 2 && y === 2)){
+                    if(backSlashVar == null){backSlashVar = occupyplayer}
+                    if (backSlashVar != occupyplayer || occupyplayer == null){isBackSlashWin = false}
                 }
 
-                if((x == 2 && y == 0)||(x == 1 && y == 1)||(x == 0 && y == 2)){
-                    if(forwardSlashVar == undefined){forwardSlashVar = occupyplayer}
-                    else if (forwardSlashVar != occupyplayer){isForwardSlashWin = false}
+                if((x === 2 && y === 0)||(x === 1 && y === 1)||(x === 0 && y === 2)){
+                    if(forwardSlashVar == null){forwardSlashVar = occupyplayer}
+                    if (forwardSlashVar != occupyplayer || occupyplayer == null){isForwardSlashWin = false}
                 }
 
-                if(occupyplayer == undefined) {isAllRowsFilled = false}
+                if(occupyplayer == null) {isAllRowsFilled = false}
             }
+            if(isRowWin){OnWinner(colleft); return;}
         }
 
-        if(isRowWin){OnWinner(colleft); return;}
         for(let i = 0; i < 3; i++){
             if(isColWin[i]){OnWinner(rowtop[i]); return;}
         }
@@ -118,10 +119,16 @@ const GameplayManager = function(playerx, playero, container){
 
     const OnWinner = (winnerxoro) => {
         isGameStarted = false
-        board.style.opacity = "0.2"
+        //board.style.opacity = "0.2"
+        let winnerplayer
+        if(winnerxoro == "x"){winnerplayer = playerx}
+        if(winnerxoro == "o"){winnerplayer = playero}
         
         let winnermessage = document.createElement("div")
-        
+        winnermessage.textContent = "The winner is " + winnerplayer.name
+        winnermessage.style.position = "relative"
+
+        board.GetBoard().append(winnermessage)
     }
 
     const OnDraw = () =>{
@@ -147,7 +154,7 @@ const GameBoard = function(){
             for(let col = 0; col < 3; col++){
                 const cell = document.createElement("div");
                 cell.className = "game-cell"
-                cell.id = "game-cell-" + row + "-" + col;
+                cell.id = "game-cell-" + col + "-" + row;
                 cell.setAttribute("grid-row", row);
                 cell.setAttribute("grid-column", col)
                 b.append(cell);
@@ -180,6 +187,7 @@ const GameBoard = function(){
         let cells = board.querySelectorAll(".game-cell")
         cells.forEach(cell =>{
             cell.innerHTML = '';
+            cell.removeAttribute("occupying-player")
         })
     }
 
@@ -203,12 +211,10 @@ gm.SetTurnPlayerSwitchedFunction((xoro) => {
         case 'x':
             playerxicon.style.setProperty("visibility", "visible")
             playeroicon.style.setProperty("visibility", "hidden")
-            console.log("x visible")
             break;
         case 'o':
             playerxicon.style.setProperty("visibility", "hidden")
             playeroicon.style.setProperty("visibility", "visible")
-            console.log("o visible")
             break;
     }
 })
@@ -218,7 +224,13 @@ let startButton = document.querySelector(".start-button")
 startButton.addEventListener('click', gm.Start, false);
 
 let resetButton = document.querySelector(".reset-button")
-resetButton.addEventListener('click', gm.Reset, false)
+resetButton.addEventListener('click', () => {
+    gm.Reset()
+    let playerxicon = document.querySelector(".x-icon.player-icon")
+    let playeroicon = document.querySelector(".o-icon.player-icon")
+    playerxicon.style.setProperty("visibility", "visible")
+    playeroicon.style.setProperty("visibility", "visible")
+}, false)
 
 let playerxchangename = document.querySelector("#player-x-name-button")
 playerxchangename.addEventListener('click',() => {
